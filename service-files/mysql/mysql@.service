@@ -4,6 +4,7 @@ After=etcd.service
 After=docker.service
 Requires=mysql-datavolume@%i.service
 Requires=mysql-discovery@%i.service
+Requires=mysql-datavolume-discovery@%i.service
 
 [Service]
 TimeoutStartSec=0
