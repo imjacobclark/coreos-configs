@@ -1,0 +1,16 @@
+[Unit]
+Description=MySQL Data Volume Service
+BindsTo=mysql@%i.service
+
+[Service]
+TimeoutStartSec=0
+KillMode=none
+EnvironmentFile=/etc/environment
+ExecStartPre=-/usr/bin/docker kill mysql-datavolume%i
+ExecStartPre=-/usr/bin/docker rm mysql-datavolume%i
+ExecStartPre=/usr/bin/docker pull busybox
+ExecStart=/usr/bin/docker run --name mysql-datavolume%i -v /var/lib/mysql busybox
+ExecStop=/usr/bin/docker stop mysql-datavolume%i
+
+[X-Fleet]
+X-Conflicts=mysql-datavolume@*.service

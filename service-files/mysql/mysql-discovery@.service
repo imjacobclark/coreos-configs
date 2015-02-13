@@ -1,0 +1,11 @@
+[Unit]
+Description=Announce mysql@%i Service
+BindsTo=mysql@%i.service
+
+[Service]
+EnvironmentFile=/etc/environment
+ExecStart=/bin/sh -c "while true; do etcdctl set /announce/services/mysql%i ${COREOS_PUBLIC_IPV4}:%i --ttl 60; sleep 45; done"
+ExecStop=/usr/bin/etcdctl rm /announce/services/mysql%i
+
+[X-Fleet]
+X-ConditionMachineOf=mysql@%i.service
